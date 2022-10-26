@@ -5,3 +5,4 @@
 ### Added
 
 - Config db configurations and api security
+- Create author,handle validation and exception handling

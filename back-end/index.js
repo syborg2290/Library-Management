@@ -7,6 +7,8 @@ import helmet from "helmet";
 import expressSanitizer from "express-sanitizer";
 import mongoSanitize from "express-mongo-sanitize";
 import dbConnection from "./database/connection.js";
+import ErrorHandler from "./utils/error-handler.js";
+import { author } from "./api/index.js";
 
 dotenv.config();
 
@@ -27,6 +29,8 @@ const startServer = () => {
 
     app.use(cookieParser());
 
+    app.use(ErrorHandler);
+
     app.use(
       bodyParser.urlencoded({
         extended: true,
@@ -40,6 +44,9 @@ const startServer = () => {
         credentials: true,
       })
     );
+
+    //api
+    author(app);
 
     app
       .listen(PORT, () => {
