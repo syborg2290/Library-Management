@@ -33,4 +33,20 @@ export const authorController = (app) => {
       next(err);
     }
   });
+
+  app.get("/author/:id", async (req, res, next) => {
+    try {
+      const id = req.params.id;
+      
+
+      if (id === undefined || id === null) {
+        return res.sendStatus(404);
+      }
+      const { data } = await service.GetAuthorFromId(id, res);
+      return res.json(data);
+    } catch (err) {
+      next(err);
+    }
+  });
+
 };

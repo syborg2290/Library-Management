@@ -5,6 +5,7 @@ import {
   STATUS_CODES,
 } from "../../utils/app-errors.js";
 
+
 class AuthorRepository {
   async CreateAuthor({ first_name, last_name }) {
     try {
@@ -39,6 +40,19 @@ class AuthorRepository {
         "API Error",
         STATUS_CODES.INTERNAL_ERROR,
         "Invalid operations!"
+      );
+    }
+  }
+
+  async FindAuthorById({ id }) {
+    try {
+      const existingAuthor = await AuthorModel.findById(id);
+      return existingAuthor;
+    } catch (err) {
+      throw APIError(
+        "API Error",
+        STATUS_CODES.INTERNAL_ERROR,
+        "Unable to Find Author"
       );
     }
   }

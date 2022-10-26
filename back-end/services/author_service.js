@@ -73,6 +73,25 @@ class AuthorService {
       throw new APIError("Invalid operation", err);
     }
   }
+
+  async GetAuthorFromId(id, res) {
+    try {
+      const author = await this.repository.FindAuthorById({id});
+        
+      if (author) {
+        return FormateData({
+          message: "done",
+          author: author,
+        });
+      } else {
+        return FormateData({
+          message: "Author not found!",
+        });
+      }
+    } catch (err) {
+      throw new APIError("Data Not found", err);
+    }
+  }
 }
 
 export default AuthorService;

@@ -7,3 +7,4 @@
 - Config db configurations and api security
 - Create author,handle validation and exception handling
 - Create get all authors function and implement dto
+- create get author by id function
