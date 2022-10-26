@@ -8,7 +8,7 @@ import expressSanitizer from "express-sanitizer";
 import mongoSanitize from "express-mongo-sanitize";
 import dbConnection from "./database/connection.js";
 import ErrorHandler from "./utils/error-handler.js";
-import { author } from "./api/index.js";
+import { authorController } from "./controller/index.js";
 
 dotenv.config();
 
@@ -46,7 +46,7 @@ const startServer = () => {
     );
 
     //api
-    author(app);
+    authorController(app);
 
     app
       .listen(PORT, () => {

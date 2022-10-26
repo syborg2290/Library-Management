@@ -1,7 +1,8 @@
 import AuthorService from "../services/author_service.js";
 import { body, validationResult } from "express-validator";
+import AuthorDTO from "../dto/AuthorDTO.js";
 
-export const author = (app) => {
+export const authorController = (app) => {
   const service = new AuthorService();
 
   app.post(
@@ -15,14 +16,21 @@ export const author = (app) => {
       }
       try {
         const { first_name, last_name } = req.body;
-        const { data } = await service.CreateAuthor(
-          { first_name, last_name },
-          res
-        );
+        const dto = new AuthorDTO({ first_name, last_name });
+        const { data } = await service.CreateAuthor(dto, res);
         return res.json(data);
       } catch (err) {
         next(err);
       }
     }
   );
+
+  app.get("/authors", async (req, res, next) => {
+    try {
+      const { data } = await service.getAuthors(res);
+      return res.json(data);
+    } catch (err) {
+      next(err);
+    }
+  });
 };

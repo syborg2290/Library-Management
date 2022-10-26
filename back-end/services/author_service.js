@@ -1,5 +1,10 @@
 import AuthorRepository from "../database/repository/author_repository.js";
-import { APIError, BadRequestError } from "../utils/app-errors.js";
+import AuthorDto from "../dto/AuthorDTO.js";
+import {
+  APIError,
+  BadRequestError,
+  STATUS_CODES,
+} from "../utils/app-errors.js";
 import { FormateData } from "../utils/utils.js";
 
 class AuthorService {
@@ -8,12 +13,14 @@ class AuthorService {
   }
 
   async CreateAuthor(authorInputs, res) {
-    const { first_name, last_name } = authorInputs;
+    const dto = new AuthorDto(authorInputs);
+    const first_name = dto.first_name;
+    const last_name = dto.last_name;
 
     try {
       if (first_name || last_name !== null) {
         if (first_name || last_name !== "") {
-          const existingAuthor = await this.repository.FindUserByAuthor({
+          const existingAuthor = await this.repository.FindNameByAuthor({
             first_name,
             last_name,
           });
@@ -24,23 +31,43 @@ class AuthorService {
               last_name,
             });
 
-            return res.status(201).send({
+            return res.status(STATUS_CODES.OK).send({
               data: authorRes,
               message: "New author is added!",
             });
           } else {
-            return FormateData({
+            return res.status(STATUS_CODES.BAD_REQUEST).send({
+              data: null,
               message: "Author is already in the database!",
             });
           }
         } else {
-          return FormateData({
+          return res.status(STATUS_CODES.BAD_REQUEST).send({
+            data: null,
             message: "Values can not be empty!",
           });
         }
       }
-      return FormateData({
+      return res.status(STATUS_CODES.BAD_REQUEST).send({
+        data: null,
         message: "Values can not be null!",
+      });
+    } catch (err) {
+      throw new APIError("Invalid operation", err);
+    }
+  }
+
+  async getAuthors(res) {
+    try {
+      const authorsRes = await this.repository.GetAllAuthors();
+      if (authorsRes.error) {
+        return res.status(STATUS_CODES.NOT_FOUND).send({
+          data: null,
+          message: authorsRes.result,
+        });
+      }
+      return res.status(STATUS_CODES.OK).send({
+        data: authorsRes.result,
       });
     } catch (err) {
       throw new APIError("Invalid operation", err);

@@ -23,7 +23,27 @@ class AuthorRepository {
     }
   }
 
-  async FindUserByAuthor({ first_name, last_name }) {
+  async GetAllAuthors() {
+    try {
+      const authors = await AuthorModel.find();
+      if (authors.length === 0) {
+        return {
+          error: true,
+          result: "Not found any authors!",
+        };
+      }
+
+      return { error: false, result: authors };
+    } catch (err) {
+      throw APIError(
+        "API Error",
+        STATUS_CODES.INTERNAL_ERROR,
+        "Invalid operations!"
+      );
+    }
+  }
+
+  async FindNameByAuthor({ first_name, last_name }) {
     try {
       const existingAuthor = await AuthorModel.findOne({
         first_name: first_name,
