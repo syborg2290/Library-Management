@@ -59,6 +59,7 @@ export const authorController = (app) => {
       if (id === undefined || id === null) {
         return res.sendStatus(STATUS_CODES.BAD_REQUEST);
       }
+      
       const { data } = await service.GetAuthorFromId(id, res);
       return res.json(data);
     } catch (err) {

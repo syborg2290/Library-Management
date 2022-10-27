@@ -45,6 +45,29 @@ class BookRepository {
     }
   }
 
+  async FindBookById({ id ,req}) {
+    try {
+      const existingBook = await BookModel.findById(id).populate("author").exec();
+      //check avilability of specific author and error handling
+      if (!existingBook){
+        return {
+          error: true,
+          result: "Not found any book for the provided id!",
+        };
+      }
+      return {
+        error: false,
+        result: existingBook,
+      };
+    } catch (err) {
+      throw APIError(
+        "API Error",
+        STATUS_CODES.INTERNAL_ERROR,
+        "Unable to Find Book"
+      );
+    }
+  }
+
   async IsBooksAlreadyRegistered({ name, isbn }) {
     try {
       const existingBookWithName = await BookModel.find({

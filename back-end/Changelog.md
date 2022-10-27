@@ -17,3 +17,4 @@ ____________Author______________
 ____________Book______________________
 - Create add new book and validate
 - Create get all books,create relationship,validating and error handling of get all book function
+- Create get book by id function,error handling and change get author by id controller

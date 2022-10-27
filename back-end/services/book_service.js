@@ -100,6 +100,25 @@ class BookService {
       throw new APIError("Invalid operation", err);
     }
   }
+
+  async GetBookFromId(id, res) {
+    try {
+      const bookRes = await this.repository.FindBookById({ id, });
+      //error handling
+      if (bookRes.error) {
+        return res.status(STATUS_CODES.NOT_FOUND).send({
+          data: null,
+          message: bookRes.result,
+        });
+      }
+
+      return res.status(STATUS_CODES.OK).send({
+        data: bookRes.result,
+      });
+    } catch (err) {
+      throw new APIError("Invalid operation", err);
+    }
+  }
 }
 
 export default BookService;

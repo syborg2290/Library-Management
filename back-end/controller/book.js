@@ -36,4 +36,19 @@ export const bookController = (app) => {
       next(err);
     }
   });
+
+  app.get("/book/:id", async (req, res, next) => {
+    try {
+      const id = req.params.id;
+
+      //validating book_id and error handling
+      if (id === undefined || id === null) {
+        return res.sendStatus(STATUS_CODES.BAD_REQUEST);
+      }
+      const { data } = await service.GetBookFromId(id, res);
+      return res.json(data);
+    } catch (err) {
+      next(err);
+    }
+  });
 };
