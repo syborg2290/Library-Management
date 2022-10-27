@@ -67,6 +67,34 @@ class AuthorRepository {
     }
   }
 
+  async FindAuthorByIdAndUpdate({ id, newData }) {
+    try {
+      const existingAuthor = AuthorModel.findById(id);
+      //check avilability for the update
+      if (!existingAuthor) {
+        return {
+          error: true,
+          result: "Not found any author for the provided id!",
+        };
+      }
+      const updatedAuthorRes = await AuthorModel.findByIdAndUpdate(
+        { _id: id },
+        newData,
+        { new: true }
+      );
+      return {
+        error: false,
+        result: updatedAuthorRes,
+      };
+    } catch (err) {
+      throw APIError(
+        "API Error",
+        STATUS_CODES.INTERNAL_ERROR,
+        "Unable to find Author or update author"
+      );
+    }
+  }
+
   async FindNameByAuthor({ first_name, last_name }) {
     try {
       const existingAuthor = await AuthorModel.findOne({

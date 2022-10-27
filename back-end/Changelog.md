@@ -10,3 +10,4 @@
 - create get author by id function
 - make change the find author by id function(exeption handling)
 - write code comments for the all of author things
+- create find author by id and update function

@@ -1,6 +1,7 @@
 import AuthorService from "../services/author_service.js";
 import { body, validationResult } from "express-validator";
 import AuthorDTO from "../dto/AuthorDTO.js";
+import { STATUS_CODES } from "../utils/app-errors.js";
 
 export const authorController = (app) => {
   const service = new AuthorService();
@@ -35,13 +36,28 @@ export const authorController = (app) => {
     }
   });
 
+  app.put("/author/update/:id", async (req, res, next) => {
+    try {
+      const id = req.params.id; // get id from request header
+      const newData = req.body; // get value from request body
+      if (!newData) {
+        return res.sendStatus(STATUS_CODES.BAD_REQUEST);
+      }
+
+      const { data } = await service.GetAuthorByIdAndUpdate(id, newData, res);
+      return res.json(data);
+    } catch (error) {
+      next(err);
+    }
+  });
+
   app.get("/author/:id", async (req, res, next) => {
     try {
       const id = req.params.id;
 
       //validating author_id and error handling
       if (id === undefined || id === null) {
-        return res.sendStatus(404);
+        return res.sendStatus(STATUS_CODES.BAD_REQUEST);
       }
       const { data } = await service.GetAuthorFromId(id, res);
       return res.json(data);

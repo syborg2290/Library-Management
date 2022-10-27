@@ -61,6 +61,7 @@ class AuthorService {
   async getAuthors(res) {
     try {
       const authorsRes = await this.repository.GetAllAuthors();
+      //error handling
       if (authorsRes.error) {
         return res.status(STATUS_CODES.NOT_FOUND).send({
           data: null,
@@ -78,6 +79,7 @@ class AuthorService {
   async GetAuthorFromId(id, res) {
     try {
       const authorRes = await this.repository.FindAuthorById({ id });
+      //error handling
       if (authorRes.error) {
         return res.status(STATUS_CODES.NOT_FOUND).send({
           data: null,
@@ -87,6 +89,28 @@ class AuthorService {
 
       return res.status(STATUS_CODES.OK).send({
         data: authorRes.result,
+      });
+    } catch (err) {
+      throw new APIError("Invalid operation", err);
+    }
+  }
+
+  async GetAuthorByIdAndUpdate(id, newData, res) {
+    try {
+      const updatedAuthorRes = await this.repository.FindAuthorByIdAndUpdate({
+        id,
+        newData,
+      });
+      //error handling
+      if (updatedAuthorRes.error) {
+        return res.status(STATUS_CODES.NOT_FOUND).send({
+          data: null,
+          message: updatedAuthorRes.result,
+        });
+      }
+
+      return res.status(STATUS_CODES.OK).send({
+        data: updatedAuthorRes.result,
       });
     } catch (err) {
       throw new APIError("Invalid operation", err);
