@@ -8,7 +8,7 @@ import expressSanitizer from "express-sanitizer";
 import mongoSanitize from "express-mongo-sanitize";
 import dbConnection from "./database/connection.js";
 import ErrorHandler from "./utils/error-handler.js";
-import { authorController } from "./controller/index.js";
+import { authorController, bookController } from "./controller/index.js";
 
 // config .env
 dotenv.config();
@@ -33,8 +33,8 @@ const startServer = () => {
 
     // secure apps by setting various HTTP headers and hiding unwanted headers to display with a request
     app.use(helmet());
-    
-    // Set the body size 
+
+    // Set the body size
     app.use(express.json({ limit: "1mb" }));
 
     // attach cookieParser middleware here
@@ -61,6 +61,7 @@ const startServer = () => {
 
     //api
     authorController(app);
+    bookController(app);
 
     app
       .listen(PORT, () => {
