@@ -28,6 +28,7 @@ export const bookController = (app) => {
     }
   );
 
+  //get all book
   app.get("/books", async (req, res, next) => {
     try {
       const { data } = await service.getBooks(res);
@@ -36,7 +37,8 @@ export const bookController = (app) => {
       next(err);
     }
   });
-
+  
+  //get book by id
   app.get("/book/:id", async (req, res, next) => {
     try {
       const id = req.params.id;
@@ -48,6 +50,22 @@ export const bookController = (app) => {
       const { data } = await service.GetBookFromId(id, res);
       return res.json(data);
     } catch (err) {
+      next(err);
+    }
+  });
+
+  //update book by id
+  app.put("/book/update/:id", async (req, res, next) => {
+    try {
+      const id = req.params.id; // get id from request header
+      const newData = req.body; // get value from request body
+      if (!newData) {
+        return res.sendStatus(STATUS_CODES.BAD_REQUEST);
+      }
+
+      const { data } = await service.GetBookByIdAndUpdate(id, newData, res);
+      return res.json(data);
+    } catch (error) {
       next(err);
     }
   });

@@ -45,11 +45,13 @@ class BookRepository {
     }
   }
 
-  async FindBookById({ id ,req}) {
+  async FindBookById({ id, req }) {
     try {
-      const existingBook = await BookModel.findById(id).populate("author").exec();
+      const existingBook = await BookModel.findById(id)
+        .populate("author")
+        .exec();
       //check avilability of specific author and error handling
-      if (!existingBook){
+      if (!existingBook) {
         return {
           error: true,
           result: "Not found any book for the provided id!",
@@ -64,6 +66,34 @@ class BookRepository {
         "API Error",
         STATUS_CODES.INTERNAL_ERROR,
         "Unable to Find Book"
+      );
+    }
+  }
+
+  async FindBookByIdAndUpdate({ id, newData }) {
+    try {
+      const existingBook = BookModel.findById(id);
+      //check avilability for the update
+      if (!existingBook) {
+        return {
+          error: true,
+          result: "Not found any book for the provided id!",
+        };
+      }
+      const updatedBookRes = await BookModel.findByIdAndUpdate(
+        { _id: id },
+        newData,
+        { new: true }
+      );
+      return {
+        error: false,
+        result: updatedBookRes,
+      };
+    } catch (err) {
+      throw APIError(
+        "API Error",
+        STATUS_CODES.INTERNAL_ERROR,
+        "Unable to find book or update author"
       );
     }
   }

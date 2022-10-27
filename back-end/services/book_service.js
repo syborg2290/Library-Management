@@ -103,7 +103,7 @@ class BookService {
 
   async GetBookFromId(id, res) {
     try {
-      const bookRes = await this.repository.FindBookById({ id, });
+      const bookRes = await this.repository.FindBookById({ id });
       //error handling
       if (bookRes.error) {
         return res.status(STATUS_CODES.NOT_FOUND).send({
@@ -114,6 +114,28 @@ class BookService {
 
       return res.status(STATUS_CODES.OK).send({
         data: bookRes.result,
+      });
+    } catch (err) {
+      throw new APIError("Invalid operation", err);
+    }
+  }
+
+  async GetBookByIdAndUpdate(id, newData, res) {
+    try {
+      const updatedBookRes = await this.repository.FindBookByIdAndUpdate({
+        id,
+        newData,
+      });
+      //error handling
+      if (updatedBookRes.error) {
+        return res.status(STATUS_CODES.NOT_FOUND).send({
+          data: null,
+          message: updatedBookRes.result,
+        });
+      }
+
+      return res.status(STATUS_CODES.OK).send({
+        data: updatedBookRes.result,
       });
     } catch (err) {
       throw new APIError("Invalid operation", err);
