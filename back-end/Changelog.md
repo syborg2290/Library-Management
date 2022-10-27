@@ -16,3 +16,4 @@ ____________Author______________
 
 ____________Book______________________
 - Create add new book and validate
+- Create get all books,create relationship,validating and error handling of get all book function

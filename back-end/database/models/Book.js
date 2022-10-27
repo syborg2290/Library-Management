@@ -11,13 +11,16 @@ const BookSchema = new Schema(
       required: true,
       validate: {
         validator: function (v) {
-          var re = /^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/;
+          //Validate ISBN in model
+          var re =
+            /^(?:ISBN(?:-10)?:? )?(?=[0-9X]{10}$|(?=(?:[0-9]+[- ]){3})[- 0-9X]{13}$)[0-9]{1,5}[- ]?[0-9]+[- ]?[0-9]+[- ]?[0-9X]$/;
           return !v || !v.trim().length || re.test(v);
         },
         message: "ISBN number is invalid!",
       },
+      unique: true,
     },
-    author: { type: mongoose.Types.ObjectId, ref: "author", required: true },
+    author: { type: mongoose.Types.ObjectId, ref: "author", required: true }, //Create relationship
   },
   {
     toJSON: {

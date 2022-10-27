@@ -1,14 +1,17 @@
 import BookRepository from "../database/repository/book_repository.js";
+import AuthorRepository from "../database/repository/author_repository.js";
 import BookDto from "../dto/BookDTO.js";
 import {
   APIError,
   BadRequestError,
   STATUS_CODES,
 } from "../utils/app-errors.js";
+import { ValidateIsbn } from "../utils/utils.js";
 
 class BookService {
   constructor() {
     this.repository = new BookRepository();
+    this.authorRepository = new AuthorRepository();
   }
 
   async CreateBook(bookInputs, res) {
@@ -21,13 +24,32 @@ class BookService {
     try {
       if (name || isbn || authorId !== null) {
         if (name || isbn || authorId !== "") {
-          const existingBook = await this.repository.IsBooksAlreadyRegistered({
-            name,
-            isbn,
-          });
+          if (ValidateIsbn(isbn) === false) {
+            return res.status(STATUS_CODES.BAD_REQUEST).send({
+              data: null,
+              message: "Invalid isbn format!",
+            });
+          }
+          const existingAuthor = await this.authorRepository.FindAuthorById(
+            authorId
+          );
+          //check avilability of specific author and error handling
+          if (!existingAuthor.error) {
+            return res.status(STATUS_CODES.BAD_REQUEST).send({
+              data: null,
+              message: "Not found any author for the provided id!",
+            });
+          }
+
+          const isExistingBook = await this.repository.IsBooksAlreadyRegistered(
+            {
+              name,
+              isbn,
+            }
+          );
 
           //validate avilability and error handling
-          if (!existingBook) {
+          if (!isExistingBook) {
             const bookRes = await this.repository.CreateBook({
               name,
               isbn,
@@ -54,6 +76,25 @@ class BookService {
       return res.status(STATUS_CODES.BAD_REQUEST).send({
         data: null,
         message: "Values can not be null!",
+      });
+    } catch (err) {
+      throw new APIError("Invalid operation", err);
+    }
+  }
+
+  async getBooks(res) {
+    try {
+      const booksRes = await this.repository.GetAllBooks();
+
+      //error handling
+      if (booksRes.error) {
+        return res.status(STATUS_CODES.NOT_FOUND).send({
+          data: null,
+          message: booksRes.result,
+        });
+      }
+      return res.status(STATUS_CODES.OK).send({
+        data: booksRes.result,
       });
     } catch (err) {
       throw new APIError("Invalid operation", err);

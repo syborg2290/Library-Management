@@ -27,4 +27,13 @@ export const bookController = (app) => {
       }
     }
   );
+
+  app.get("/books", async (req, res, next) => {
+    try {
+      const { data } = await service.getBooks(res);
+      return res.json(data);
+    } catch (err) {
+      next(err);
+    }
+  });
 };
