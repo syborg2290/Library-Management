@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+// Define a schema
 const Schema = mongoose.Schema;
 
 const AuthorSchema = new Schema(
@@ -17,4 +18,5 @@ const AuthorSchema = new Schema(
   }
 );
 
+// Compile model from schema
 export const AuthorModel = mongoose.model("author", AuthorSchema);

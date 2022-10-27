@@ -26,6 +26,7 @@ class AuthorRepository {
   async GetAllAuthors() {
     try {
       const authors = await AuthorModel.find();
+      //check avilability of authors and error handling
       if (authors.length === 0) {
         return {
           error: true,
@@ -46,6 +47,7 @@ class AuthorRepository {
   async FindAuthorById({ id }) {
     try {
       const existingAuthor = await AuthorModel.findById(id);
+      //check avilability of specific author and error handling
       if (!existingAuthor) {
         return {
           error: true,

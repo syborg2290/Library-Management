@@ -5,7 +5,6 @@ import {
   BadRequestError,
   STATUS_CODES,
 } from "../utils/app-errors.js";
-import { FormateData } from "../utils/utils.js";
 
 class AuthorService {
   constructor() {
@@ -17,6 +16,7 @@ class AuthorService {
     const first_name = dto.first_name;
     const last_name = dto.last_name;
 
+    // validating author name
     try {
       if (first_name || last_name !== null) {
         if (first_name || last_name !== "") {
@@ -25,6 +25,7 @@ class AuthorService {
             last_name,
           });
 
+          //validate avilability and error handling
           if (!existingAuthor) {
             const authorRes = await this.repository.CreateAuthor({
               first_name,

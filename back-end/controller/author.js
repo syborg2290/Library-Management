@@ -11,12 +11,13 @@ export const authorController = (app) => {
     body("last_name").isLength({ min: 3 }),
     async (req, res, next) => {
       const errors = validationResult(req);
+      //validating and error handling
       if (!errors.isEmpty()) {
         return res.json({ message: errors.array({ onlyFirstError: true }) });
       }
       try {
-        const { first_name, last_name } = req.body;
-        const dto = new AuthorDTO({ first_name, last_name });
+        const { first_name, last_name } = req.body; // parse data using request body
+        const dto = new AuthorDTO({ first_name, last_name }); //assign authorDto to new variable and parse using parameters
         const { data } = await service.CreateAuthor(dto, res);
         return res.json(data);
       } catch (err) {
@@ -38,6 +39,7 @@ export const authorController = (app) => {
     try {
       const id = req.params.id;
 
+      //validating author_id and error handling
       if (id === undefined || id === null) {
         return res.sendStatus(404);
       }

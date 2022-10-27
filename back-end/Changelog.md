@@ -8,4 +8,5 @@
 - Create author,handle validation and exception handling
 - Create get all authors function and implement dto
 - create get author by id function
-- make change the find author by id function
+- make change the find author by id function(exeption handling)
+- write code comments for the all of author things
