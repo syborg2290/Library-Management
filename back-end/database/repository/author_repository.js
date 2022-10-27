@@ -5,7 +5,6 @@ import {
   STATUS_CODES,
 } from "../../utils/app-errors.js";
 
-
 class AuthorRepository {
   async CreateAuthor({ first_name, last_name }) {
     try {
@@ -47,7 +46,16 @@ class AuthorRepository {
   async FindAuthorById({ id }) {
     try {
       const existingAuthor = await AuthorModel.findById(id);
-      return existingAuthor;
+      if (!existingAuthor) {
+        return {
+          error: true,
+          result: "Not found any author for the provided id!",
+        };
+      }
+      return {
+        error: false,
+        result: existingAuthor,
+      };
     } catch (err) {
       throw APIError(
         "API Error",

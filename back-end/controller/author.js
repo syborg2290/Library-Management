@@ -37,7 +37,6 @@ export const authorController = (app) => {
   app.get("/author/:id", async (req, res, next) => {
     try {
       const id = req.params.id;
-      
 
       if (id === undefined || id === null) {
         return res.sendStatus(404);
@@ -48,5 +47,4 @@ export const authorController = (app) => {
       next(err);
     }
   });
-
 };

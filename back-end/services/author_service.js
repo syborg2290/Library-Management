@@ -76,20 +76,19 @@ class AuthorService {
 
   async GetAuthorFromId(id, res) {
     try {
-      const author = await this.repository.FindAuthorById({id});
-        
-      if (author) {
-        return FormateData({
-          message: "done",
-          author: author,
-        });
-      } else {
-        return FormateData({
-          message: "Author not found!",
+      const authorRes = await this.repository.FindAuthorById({ id });
+      if (authorRes.error) {
+        return res.status(STATUS_CODES.NOT_FOUND).send({
+          data: null,
+          message: authorRes.result,
         });
       }
+
+      return res.status(STATUS_CODES.OK).send({
+        data: authorRes.result,
+      });
     } catch (err) {
-      throw new APIError("Data Not found", err);
+      throw new APIError("Invalid operation", err);
     }
   }
 }
