@@ -7,7 +7,7 @@ export const bookController = (app) => {
   const service = new BookService();
 
   app.post(
-    "/book",
+    "/book/:page",
     body("name").notEmpty({ ignore_whitespace: true }),
     body("isbn").isString(),
     body("authorId").notEmpty({ ignore_whitespace: true }),
@@ -31,13 +31,15 @@ export const bookController = (app) => {
   //get all book
   app.get("/books", async (req, res, next) => {
     try {
-      const { data } = await service.getBooks(res);
+      let page = req.query.page;
+      const { data } = await service.getBooks(page, res);
+      console.log(data);
       return res.json(data);
     } catch (err) {
       next(err);
     }
   });
-  
+
   //get book by id
   app.get("/book/:id", async (req, res, next) => {
     try {

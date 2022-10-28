@@ -82,10 +82,9 @@ class BookService {
     }
   }
 
-  async getBooks(res) {
+  async getBooks(page, res) {
     try {
-      const booksRes = await this.repository.GetAllBooks();
-
+      const booksRes = await this.repository.GetAllBooks({ page });
       //error handling
       if (booksRes.error) {
         return res.status(STATUS_CODES.NOT_FOUND).send({
@@ -94,7 +93,11 @@ class BookService {
         });
       }
       return res.status(STATUS_CODES.OK).send({
-        data: booksRes.result,
+        data: {
+          books: booksRes.result,
+          currentPage: booksRes.currentPage,
+          numberOfPages: booksRes.numberOfPages,
+        },
       });
     } catch (err) {
       throw new APIError("Invalid operation", err);

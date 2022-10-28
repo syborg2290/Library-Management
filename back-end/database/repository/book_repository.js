@@ -4,6 +4,7 @@ import {
   BadRequestError,
   STATUS_CODES,
 } from "../../utils/app-errors.js";
+import { pagination } from "./pagination.js";
 
 class BookRepository {
   async CreateBook({ name, isbn, authorId }) {
@@ -23,11 +24,19 @@ class BookRepository {
       );
     }
   }
-
-  async GetAllBooks() {
+  
+  //get all book with pagination
+  async GetAllBooks({ page }) {
     try {
-      const books = await BookModel.find().populate("author").exec(); //return author document with collection
+      const res = await pagination(BookModel, page, 20, true, true, "author"); // populate author
+      const books = res.results;
       //check avilability of book and error handling
+      if (!books) {
+        return {
+          error: true,
+          result: "Not found any books!",
+        };
+      }
       if (books.length === 0) {
         return {
           error: true,
@@ -35,7 +44,12 @@ class BookRepository {
         };
       }
 
-      return { error: false, result: books };
+      return {
+        error: false,
+        result: books,
+        currentPage: Number(res.pag.currentPage),
+        numberOfPages: res.pag.pagesCount,
+      };
     } catch (err) {
       throw APIError(
         "API Error",
