@@ -1,6 +1,15 @@
-export const CREATE='CREATE';
-export const UPDATE='UPDATE';
-export const GET_ALL='GET_ALL';
-export const GET_BY_ID='GET_ALL';
-export const START_LOADING='START_LOADING';
-export const END_LOADING='END_LOADING';
+export const CREATE_BOOK = "CREATE_BOOK";
+export const UPDATE_BOOK = "UPDATE_BOOK";
+export const GET_ALL_BOOK = "GET_ALL_BOOK";
+export const GET_BY_ID_BOOK = "GET_BY_ID_BOOK";
+export const START_LOADING_BOOK = "START_LOADING_BOOK";
+export const END_LOADING_BOOK = "END_LOADING_BOOK";
+
+export const CREATE_AUTHOR = "CREATE_AUTHOR";
+export const CREATE_SUCCESS = "CREATE_SUCCESS";
+export const CREATE_FAILED = "CREATE_FAILED";
+export const UPDATE_AUTHOR = "UPDATE_AUTHOR";
+export const GET_ALL_AUTHOR = "GET_ALL_AUTHOR";
+export const GET_BY_ID_AUTHOR = "GET_BY_ID_AUTHOR";
+export const START_LOADING_AUTHOR = "START_LOADING_AUTHOR";
+export const END_LOADING_AUTHOR = "END_LOADING_AUTHOR";

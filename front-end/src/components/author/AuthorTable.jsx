@@ -1,5 +1,5 @@
 import React from 'react'
-import { Table, Space, Tag, Tooltip } from "antd";
+import { Table, Space, Tooltip } from "antd";
 import { EyeOutlined, EditOutlined } from "@ant-design/icons";
 import UpdateAuthorModal from './common/UpdateAuthorModal';
 import ViewAuthorModal from './common/ViewAuthorModal';
