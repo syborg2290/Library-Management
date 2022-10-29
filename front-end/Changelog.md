@@ -6,7 +6,7 @@
 
 
 -Create basic project folders,nav bar and home
--Create add,update,view, ui for the book 
-
+-Create add,update and view ui for the book 
+-Create add,update and view ui for the author
 
 ____________Book______________________
