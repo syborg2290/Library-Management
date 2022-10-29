@@ -1,20 +1,15 @@
 import React from "react";
-import { Container } from "@material-ui/core";
-import NavBar from "./components/NavBar/NavBar";
-import { BrowserRouter} from "react-router-dom";
-import Home from "./components/Home/Home";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
 
 function App() {
   return (
-    <BrowserRouter>
-    <Container maxWidth="xl">
-      <NavBar/>
-      <Home/>
-
-     
-
-    </Container>
-    </BrowserRouter>
+    <Router>
+      <Routes>
+        {/* Routes */}
+        <Route path="/" element={<Home />} />
+      </Routes>
+    </Router>
   );
 }
 
