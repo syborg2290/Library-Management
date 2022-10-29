@@ -29,9 +29,9 @@ function Author() {
       <Row className="mt-10 ml-20">
         <Col span={1} className="flex justify-center">
           <Button
-            className="mr-11"
+            
             onClick={showModal}
-            className="bg-blue-700 text-white font-bold rounded-md m-2 py-1"
+            className="bg-blue-700 text-white font-bold rounded-md m-2 py-1 "
           >
             Add New Author
           </Button>
